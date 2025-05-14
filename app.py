@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, session
 from agent import DoctorAppointmentAgent
 import os
 from datetime import datetime
-from langchain.schema import HumanMessage, AIMessage  # Make sure to import these
+from langchain_core.messages import HumanMessage, AIMessage  # Use correct import path
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -133,8 +133,12 @@ def chat():
             'query': '',
             'current_reasoning': ''
         }
+        
+        # Create a proper HumanMessage object
+        human_message = HumanMessage(content=user_message)
+        
         result = workflow.invoke({
-            'messages': [{"type": "human", "content": user_message}],
+            'messages': [human_message],
             'id_number': session['id_number'],
             'next': '',
             'query': user_message,
@@ -146,17 +150,18 @@ def chat():
         if isinstance(state, dict):
             if not state.get('messages'):
                 state['messages'] = []
-            # Add the new message
-            if isinstance(user_message, dict):
-                state['messages'].append(user_message)
-            else:
-                state['messages'].append({"type": "human", "content": user_message})
+            
+            # Add the new message as a proper HumanMessage
+            human_message = HumanMessage(content=user_message)
+            state['messages'].append(human_message)
+            
             # Invoke workflow
             result = workflow.invoke(state)
         else:
             # Handle invalid state
+            human_message = HumanMessage(content=user_message)
             result = workflow.invoke({
-                'messages': [{"type": "human", "content": user_message}],
+                'messages': [human_message],
                 'id_number': session['id_number'],
                 'next': '',
                 'query': user_message,
@@ -204,6 +209,11 @@ def get_doctors():
         'doctors': doctors,
         'specializations': specializations
     })
+
+@app.route('/favicon.ico')
+def favicon():
+    """Handle favicon requests to prevent 500 errors."""
+    return "", 204  # Return empty response with "No Content" status
 
 @app.route('/logout', methods=['POST'])
 def logout():
