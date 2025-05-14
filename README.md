@@ -1,26 +1,66 @@
 # BookMyDocAI 🏥
 
-BookMyDocAI is a fully automated, end-to-end multi-agent AI system designed for seamless doctor appointment booking. Leveraging the power of agentic AI, multiple specialized agents work in harmony to handle different aspects of the appointment booking process - from understanding user requests to finding available doctors and scheduling appointments, all without human intervention.
+BookMyDocAI is a fully automated, end-to-end multi-agent AI system designed for seamless doctor appointment booking. Built with Flask and LangGraph, this system demonstrates sophisticated agent orchestration for handling medical appointments without human intervention.
 
-![Project Mind Map](media/BookMyDocAI_MindMap.jpg)
+## 🤖 Agent Architecture
 
-## 🎯 Project Overview
+Our system employs a hierarchical multi-agent structure with three specialized agents working in harmony:
 
-BookMyDocAI demonstrates the sophisticated orchestration of multiple AI agents working together to:
-- Process and understand patient requests
-- Search for suitable doctors
-- Check availability
-- Schedule appointments
-- Handle confirmations and follow-ups
+1. **Supervisor Agent** 👨‍💼
+   - Acts as the central coordinator
+   - Routes requests to appropriate specialized agents
+   - Makes routing decisions based on query analysis
+   - Possible routing paths:
+     - Information Node
+     - Booking Node
+     - FINISH (when task is complete)
 
+2. **Information Agent** ℹ️
+   - Handles doctor availability queries
+   - Provides hospital-related FAQs
+   - Has access to specialized tools:
+     - `check_availability_by_doctor`
+     - `check_availability_by_specialization`
+
+3. **Booking Agent** 📅
+   - Manages all appointment-related operations
+   - Handles tools for:
+     - `set_appointment`: Creating new appointments
+     - `cancel_appointment`: Canceling existing appointments
+     - `reschedule_appointment`: Modifying appointment dates
+
+## 🔄 Workflow Process
+
+1. **Initial Request Processing**
+   - User query is received with an identification number
+   - Supervisor agent analyzes the request
+
+2. **Request Routing**
+   - Supervisor determines appropriate specialized agent:
+     - Information requests → Information Node
+     - Booking operations → Booking Node
+     - Completed tasks → FINISH
+
+3. **Specialized Processing**
+   - Information Node:
+     - Processes availability checks
+     - Handles hospital information queries
+   - Booking Node:
+     - Manages appointment operations
+     - Processes date-time specifications
+     - Handles booking confirmations
+
+4. **Response Generation**
+   - Formats tool responses into user-friendly messages
+   - Provides booking references and confirmation details
 
 ## 🛠️ Technology Stack
 
-- **Backend:** Flask (Python)
+- **Backend Framework:** Flask
 - **AI Framework:** LangGraph
-- **Frontend:** HTML, CSS, JavaScript
-- **Agent Communication:** LangGraph's structured workflows
-
+- **Agent Communication:** LangChain Core
+- **State Management:** StateGraph
+- **Tool Integration:** Custom Toolkit System
 
 ## 🚀 Getting Started
 
@@ -35,35 +75,46 @@ BookMyDocAI demonstrates the sophisticated orchestration of multiple AI agents w
    pip install -r requirements.txt
    ```
 
-3. **Set Up Environment:**
-   - Configure your AI model API keys
+3. **Required Dependencies:**
+   ```python
+   langchain_core
+   langgraph
+   typing_extensions
+   flask
+   ```
 
 4. **Run the Application:**
    ```bash
    python app.py
    ```
 
+## 🎥 Demo Video
+
+Check out our demo video to see BookMyDocAI in action:
+
+[Watch Demo Video](media/BookMyDocAI.mp4)
+
+https://github.com/Venom567SR/BookMyDocAI/blob/main/media/BookMyDocAI.mp4
+
 ## 🌟 Key Features
 
-- **End-to-End Automation:** Complete booking process without human intervention
-- **Multi-Agent System:** Specialized agents for different tasks
-- **Intelligent Coordination:** Supervisor agent ensures smooth workflow
-- **Real-time Updates:** Instant notifications and confirmations
-- **Smart Scheduling:** AI-powered optimal appointment scheduling
-- **User-Friendly Interface:** Simple and intuitive booking process
-
+- **Smart Request Routing:** Intelligent classification of user requests
+- **Specialized Agent Handling:** Dedicated agents for specific tasks
+- **Advanced Tool Integration:** Custom tools for each operation type
+- **Human-Friendly Responses:** Automated formatting of technical responses
+- **Robust Error Handling:** Graceful error management and recovery
+- **Flexible Architecture:** Easy to extend with new capabilities
 
 ## 💡 Implementation Highlights
 
-- **LangGraph Integration:** Structured workflow management
-- **Agent Communication:** Efficient inter-agent messaging
-- **Task Delegation:** Smart distribution of responsibilities
-- **Error Handling:** Robust recovery mechanisms
-- **Scalable Architecture:** Easy to add new agents
+- **State Management:** Uses TypedDict for structured state handling
+- **Message Formatting:** Automatic conversion of tool calls to human-readable messages
+- **Date Processing:** Smart handling of various date-time formats
+- **Agent Communication:** Structured message passing between agents
 
 ## 👥 Contributing
 
-We welcome contributions! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
@@ -75,6 +126,7 @@ Part of the AI assistant family:
 - [InsightAI](https://github.com/Venom567SR/InsightAI)
 - [JobFitAI](https://github.com/Venom567SR/JobFitAI)
 - [DiagnostAI](https://github.com/Venom567SR/DiagnostAI)
+- [AutoSummaryAI](https://github.com/Venom567SR/AutoSummaryAI)
 
 ---
 
