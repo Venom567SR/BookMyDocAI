@@ -10,7 +10,7 @@ def check_availability_by_doctor(desired_date:DateModel, doctor_name:Literal['ke
     Checking the database if we have availability for the specific doctor.
     The parameters should be mentioned by the user in the query
     """
-    df = pd.read_csv(r"doctor_availability.csv")
+    df = pd.read_csv(r"../data/doctor_availability.csv")
     
     #print(df)
     
@@ -32,7 +32,7 @@ def check_availability_by_specialization(desired_date:DateModel, specialization:
     The parameters should be mentioned by the user in the query
     """
     #Dummy data
-    df = pd.read_csv(r"doctor_availability.csv")
+    df = pd.read_csv(r"../data/doctor_availability.csv")
     df['date_slot_time'] = df['date_slot'].apply(lambda input: input.split(' ')[-1])
     rows = df[(df['date_slot'].apply(lambda input: input.split(' ')[0]) == desired_date.date) & (df['specialization'] == specialization) & (df['is_available'] == True)].groupby(['specialization', 'doctor_name'])['date_slot_time'].apply(list).reset_index(name='available_slots')
 
@@ -63,7 +63,7 @@ def set_appointment(desired_date:DateTimeModel, id_number:IdentificationNumberMo
     Set appointment or slot with the doctor.
     The parameters MUST be mentioned by the user in the query.
     """
-    df = pd.read_csv(r"doctor_availability.csv")
+    df = pd.read_csv(r"../data/doctor_availability.csv")
    
     from datetime import datetime
     def convert_datetime_format(dt_str):
@@ -88,7 +88,7 @@ def cancel_appointment(date:DateTimeModel, id_number:IdentificationNumberModel, 
     Canceling an appointment.
     The parameters MUST be mentioned by the user in the query.
     """
-    df = pd.read_csv(r"doctor_availability.csv")
+    df = pd.read_csv(r"../data/doctor_availability.csv")
     case_to_remove = df[(df['date_slot'] == date.date)&(df['patient_to_attend'] == id_number.id)&(df['doctor_name'] == doctor_name)]
     if len(case_to_remove) == 0:
         return "You don´t have any appointment with that specifications"
@@ -104,7 +104,7 @@ def reschedule_appointment(old_date:DateTimeModel, new_date:DateTimeModel, id_nu
     The parameters MUST be mentioned by the user in the query.
     """
     #Dummy data
-    df = pd.read_csv(r"doctor_availability.csv")
+    df = pd.read_csv(r"../data/doctor_availability.csv")
     available_for_desired_date = df[(df['date_slot'] == new_date.date)&(df['is_available'] == True)&(df['doctor_name'] == doctor_name)]
     if len(available_for_desired_date) == 0:
         return "Not available slots in the desired period"

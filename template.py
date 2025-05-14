@@ -14,9 +14,8 @@ list_of_files = [
     "toolkit/__init__.py",
     "utils/__init__.py"
     "agent.py",
-    "main.py",
+    "app.py",
     "requirements.txt",
-    "streamlit_ui.py",
 ]
 
 

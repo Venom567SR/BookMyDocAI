@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMyDocAI - Medical Appointment System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-stethoscope"></i>
+                <h1>BookMyDocAI</h1>
+            </div>
+            <div class="header-right">
+                <div id="login-area">
+                    <input type="text" id="id-input" placeholder="Enter 7-8 digit ID" maxlength="8">
+                    <button id="login-btn" class="primary-btn">Login</button>
+                </div>
+                <div id="user-area" class="hidden">
+                    <span id="user-id"></span>
+                    <button id="logout-btn" class="secondary-btn">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="sidebar">
+                <div class="section-title">
+                    <i class="fas fa-user-md"></i>
+                    <h2>Our Doctors</h2>
+                </div>
+                <div class="doctor-list" id="doctor-list">
+                    <!-- Will be populated dynamically -->
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-clinic-medical"></i>
+                    <h2>Specializations</h2>
+                </div>
+                <div class="specialization-list" id="specialization-list">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="welcome-area" id="welcome-area">
+                    <div class="welcome-card">
+                        <h2>Welcome to BookMyDocAI</h2>
+                        <p>Your AI-powered medical appointment booking assistant</p>
+                        <div class="feature-list">
+                            <div class="feature">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Book appointments</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-calendar-times"></i>
+                                <span>Cancel appointments</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Reschedule appointments</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-search"></i>
+                                <span>Check doctor availability</span>
+                            </div>
+                        </div>
+                        <div class="instructions">
+                            <h3>Getting Started</h3>
+                            <ol>
+                                <li>Login with your ID number (7-8 digits)</li>
+                                <li>Ask our AI assistant for available appointment slots</li>
+                                <li>Book your preferred time slot</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-area hidden" id="chat-area">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message bot">
+                                <div class="message-content">
+                                    <p>Hello! I'm your virtual assistant. How can I help you today?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="Type your message here...">
+                            <button id="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 BookMyDocAI - All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <!-- Example Queries Modal -->
+    <div class="modal" id="example-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Example Queries</h2>
+            <div class="example-queries">
+                <div class="query-group">
+                    <h3>Checking Availability</h3>
+                    <div class="query-item" data-query="Is Dr. Jane Smith available on 20-05-2024?">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Is Dr. Jane Smith available on 20-05-2024?</span>
+                    </div>
+                    <div class="query-item" data-query="Show me available pediatric dentists on 25-05-2024">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Show me available pediatric dentists on 25-05-2024</span>
+                    </div>
+                </div>
+                <div class="query-group">
+                    <h3>Booking Appointments</h3>
+                    <div class="query-item" data-query="Book an appointment with Dr. John Doe on 22-05-2024 at 14:30">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Book an appointment with Dr. John Doe on 22-05-2024 at 14:30</span>
+                    </div>
+                </div>
+                <div class="query-group">
+                    <h3>Managing Appointments</h3>
+                    <div class="query-item" data-query="Cancel my appointment with Dr. Emily Johnson on 21-05-2024 at 10:30">
+                        <i class="fas fa-calendar-times"></i>
+                        <span>Cancel my appointment with Dr. Emily Johnson on 21-05-2024 at 10:30</span>
+                    </div>
+                    <div class="query-item" data-query="Reschedule my appointment with Dr. Robert Martinez from 23-05-2024 at 09:00 to 24-05-2024 at 11:00">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Reschedule my appointment with Dr. Robert Martinez from 23-05-2024 at 09:00 to 24-05-2024 at 11:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-indicator hidden" id="loading-indicator">
+        <div class="spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
